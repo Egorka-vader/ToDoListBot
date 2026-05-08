@@ -3,10 +3,10 @@ from aiogram.filters import CommandStart,Command
 from aiogram.fsm.state import State,StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram import Router,F,Bot
-from ToDoList.database import SessionLocal, User, BroadCast
-from ToDoList.config import ADMIN_ID,TOKEN
+from database import SessionLocal, User, BroadCast
+from config import ADMIN_ID,TOKEN
 from datetime import datetime
-from ToDoList.app.keyboard import start_keyboard
+from app.keyboard import start_keyboard
 import time
 import datetime
 from sqlalchemy.orm import attributes
@@ -139,7 +139,7 @@ async def start(message: Message):
 @router.callback_query(F.data == 'premium')
 async def premium_get(callback:CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='🔑 Подписка ', callback_data='subscribe')],
+        [InlineKeyboardButton(text='💳 Подписка ', callback_data='subscribe')],
         [InlineKeyboardButton(text='🤝 Поддержка бота', callback_data='support_bot')]
     ])
     await callback.answer('')
@@ -161,7 +161,7 @@ async def premium_getting(callback: CallbackQuery):
     await callback.answer('')
 
     await callback.message.answer_invoice(
-        title='🔑 Premium подписка',
+        title='💳 Premium подписка',
         description='• Доступ к расширенному поиску\n• Приоритетная поддержка',
         prices=prices,
         provider_token='',
@@ -215,7 +215,7 @@ async def process_successful_payment(message: Message):
         db.commit()
 
         await message.answer(
-            f"✅ **Premium 🔑Подписка активирована!**\n\n"
+            f"✅ **Premium 💳 Подписка активирована!**\n\n"
             f"⭐ Получено: {payment.total_amount} звёзд\n"
             f"Спасибо за покупку! 🎉",
              message_effect_id="5104841245755180586"
@@ -253,7 +253,7 @@ async def profile_answer(callback:CallbackQuery):
 
     db.close()
     await callback.message.reply(
-        f'ℹ️ Вся необходимая информация о вашем профиле\n\n🏷️ <b>Имя:</b> <a href="tg://copy?text=ddddd">{callback.from_user.full_name}</a>\n🔗<b>Username:</b> @{callback.from_user.username}\n\n🆔 <b>Мой ID:</b> <a href="tg://copy?text=ddddddd">{callback.message.from_user.id}</a>\n📆 <b>Регистрация:</b> <a href="tg://copy?text=fdddd">{register_at}</a>\n🔃 <b>TG Премиум:</b> {callback.message.from_user.is_premium}\n\n🔑 <b>Подписка:</b> {premium}\n🗣️ <b>Язык:</b> <b>{callback.message.from_user.language_code}</b>\n\n💰 Твой баланс: <a href="tg://copy?text=0.00">0.00 RUB</a>\n',
+        f'ℹ️ Вся необходимая информация о вашем профиле\n\n🏷️ <b>Имя:</b> <a href="tg://copy?text=ddddd">{callback.from_user.full_name}</a>\n🔗<b>Username:</b> @{callback.from_user.username}\n\n🆔 <b>Мой ID:</b> <a href="tg://copy?text=ddddddd">{callback.message.from_user.id}</a>\n📆 <b>Регистрация:</b> <a href="tg://copy?text=fdddd">{register_at}</a>\n🔃 <b>TG Премиум:</b> {callback.message.from_user.is_premium}\n\n💳 <b>Подписка:</b> {premium}\n🗣️ <b>Язык:</b> <b>{callback.message.from_user.language_code}</b>\n\n💰 Твой баланс: <a href="tg://copy?text=0.00">0.00 RUB</a>\n',
          parse_mode="HTML",reply_markup=start_keyboard)
 
 
